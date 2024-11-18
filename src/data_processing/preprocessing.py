@@ -4,7 +4,7 @@ import nltk
 nltk.download('punkt')
 from sklearn.model_selection import train_test_split
 from datasets import Dataset
-import os 
+import os
 
 def get_dataset(dataset, split=False):
     
@@ -61,3 +61,61 @@ def get_dataset(dataset, split=False):
     # Convert DataFrame to Hugging Face Dataset format
     dataset = Dataset.from_pandas(df)
     return dataset
+
+
+def get_dataset_chatgpt():
+    """
+    Process JSON dataset for image description accuracy evaluation.
+    
+    Args:
+        dataset_name (str): Name of the dataset file (without _raw.json extension)
+        split (bool): Whether to split the dataset into train and validation sets
+    
+    Returns:
+        Dataset or tuple of Datasets: Processed dataset
+    """
+    # Ensure processed data directory exists
+    os.makedirs('../data/processed', exist_ok=True)
+    
+    # Load raw JSON data
+    with open(f'../data/raw/annotated_chat_gpt_dataset.json', 'r') as file:
+        data = json.load(file)
+    
+    # Convert to pandas DataFrame
+    df = pd.DataFrame(data)
+
+    # Convert to pandas DataFrame with explicit column mapping
+    df = pd.DataFrame(data, columns=['question', 'image', 'response', 'label'])
+    
+    # Explicitly rename columns
+    df.columns = ['input', '_', 'response', 'label']
+    df = df.drop(columns=['_'])
+
+    df['full_sentence'] = df['response']
+    
+    # Convert label to binary (1 for INACCURATE, 0 for ACCURATE)
+    df['label'] = (df['label'] == 'INACCURATE').astype(int)
+    
+    # Add combined input-output column
+    df['input_output'] = df['input'] + ' ' + df['response']
+    
+    # Save full dataset
+    df.to_json(f'../data/processed/annotated_chat_gpt_dataset_processed.json', 
+               orient='records', indent=2)
+    
+    # Handle optional train-test split
+    # if split:
+    #     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
+        
+    #     # Save split datasets
+    #     train_df.to_json('../data/processed/train_split_processed.json', 
+    #                      orient='records', indent=2)
+    #     val_df.to_json('../data/processed/test_split_processed.json', 
+    #                    orient='records', indent=2)
+        
+    #     # Convert to Hugging Face Datasets
+    #     return (Dataset.from_pandas(train_df), 
+    #             Dataset.from_pandas(val_df))
+    
+    # Convert to Hugging Face Dataset and return
+    return Dataset.from_pandas(df)
