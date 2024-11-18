@@ -15,21 +15,20 @@ Vision-Language Models (VLMs) can sometimes generate hallucinated text that isn'
 ## Directory Structure
 ```plaintext
 ├── data/           # Contains the datasets used for training and evaluation
-├── notebooks/      # Jupyter notebooks for data exploration and model prototyping
-├── src/            # Source code for training, evaluation, and utility functions
+├── notebooks/      # Jupyter notebooks for data exploration and model performance demonstration
+├── src/            # Source code for utility functions
 └── README.md       # Project documentation
 ```
-
 
 ## Installation
 
 1. Clone the repository:
    ```bash
-   git clone []
-   cd VLMs-Hallucination-Detection
+   git clone https://github.com/silvimica/vlm-hallucination-detection.git
+   cd vlm-hallucination-detection
    ```
 
-2. Create a virtual environment (optional but recommended).
+2. Create a virtual environment with python==3.10 (optional but recommended).
 
 3. Install dependencies:
    ```bash
