@@ -29,6 +29,10 @@ Vision-Language Models (VLMs) can sometimes generate hallucinated text that isn'
    ```
 
 2. Create a virtual environment with python==3.10 (optional but recommended).
+   ```bash
+   conda create -n vlm-hal-detect python=3.10
+   conda activate vlm-hal-detect
+   ```
 
 3. Install dependencies:
    ```bash
