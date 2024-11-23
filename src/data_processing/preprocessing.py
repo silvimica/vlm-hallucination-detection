@@ -103,19 +103,5 @@ def get_dataset_chatgpt():
     df.to_json(f'../data/processed/annotated_chat_gpt_dataset_processed.json', 
                orient='records', indent=2)
     
-    # Handle optional train-test split
-    # if split:
-    #     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
-        
-    #     # Save split datasets
-    #     train_df.to_json('../data/processed/train_split_processed.json', 
-    #                      orient='records', indent=2)
-    #     val_df.to_json('../data/processed/test_split_processed.json', 
-    #                    orient='records', indent=2)
-        
-    #     # Convert to Hugging Face Datasets
-    #     return (Dataset.from_pandas(train_df), 
-    #             Dataset.from_pandas(val_df))
-    
     # Convert to Hugging Face Dataset and return
     return Dataset.from_pandas(df)
